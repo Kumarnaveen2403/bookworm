@@ -1,8 +1,12 @@
 const express = require("express");
+require("dotenv").config()
 const libgen = require('libgen');
 var cors = require('cors')
-// const app = express();
 const app=express().use('*', cors());
+const path = require("path")
+app.use(express.static(path.join(__dirname, "client", "build")))
+
+const PORT = process.env.PORT || 3001
 
 app.get("/getBook", (req, res) => {
 
@@ -53,6 +57,8 @@ app.get("/getBook", (req, res) => {
   getData()
 })
 
-const PORT = process.env.PORT || 3001
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+});
 
 app.listen(PORT, console.log(`Server started on port ${PORT}`))
